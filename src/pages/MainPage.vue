@@ -1,11 +1,12 @@
 <template>
-    <div v-for="i in 10" :key="i" class="h-32 bg-red-300 my-6 border-4">
-        {{ i }}
-    </div>
+    <VideoList />
 </template>
 
 <script>
+    import VideoList from '@/components/VideoList.vue'
     export default {
-        
+        components: {
+            VideoList
+        }
     }
 </script>
