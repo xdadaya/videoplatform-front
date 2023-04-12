@@ -1,9 +1,9 @@
 <template>
     <form class="flex flex-col mb-8 max-w-lg mx-auto mt-8" @submit.prevent="login">
         <h4 class="text-center text-3xl font-bold"> Authenticate </h4>
-        <my-input type="text" v-focus v-model="user.username" placeholder="Username" @keyup.enter="login" />
-        <my-input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
-        <my-button class="mx-auto" @click="login"> Authenticate </my-button>
+        <custom-input type="text" v-focus v-model="user.username" placeholder="Username" @keyup.enter="login" />
+        <custom-input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
+        <custom-button class="mx-auto" @click="login"> Authenticate </custom-button>
     </form>  
 </template>
 

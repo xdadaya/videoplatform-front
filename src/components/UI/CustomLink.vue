@@ -14,6 +14,6 @@
                 default: false
             }
         },
-        name: 'my-link',
+        name: 'custom-link',
     })
 </script>

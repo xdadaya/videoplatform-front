@@ -1,7 +1,7 @@
-import MyButton from '@/components/UI/MyButton.vue'
-import MyLoading from '@/components/UI/MyLoading.vue'
-import MyLink from '@/components/UI/MyLink.vue'
-import MyDialog from '@/components/UI/MyDialog.vue'
-import MyInput from '@/components/UI/MyInput.vue'
+import CustomButton from '@/components/UI/CustomButton.vue'
+import CustomLoading from '@/components/UI/CustomLoading.vue'
+import CustomLink from '@/components/UI/CustomLink.vue'
+import CustomDialog from '@/components/UI/CustomDialog.vue'
+import CustomInput from '@/components/UI/CustomInput.vue'
 
-export default [ MyButton, MyLoading, MyLink, MyDialog, MyInput ]
+export default [ CustomButton, CustomLoading, CustomLink, CustomDialog, CustomInput ]

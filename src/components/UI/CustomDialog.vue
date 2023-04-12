@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        name: 'my-dialog',
+        name: 'custom-dialog',
         props: {
         isVisible: {
             type: Boolean,
