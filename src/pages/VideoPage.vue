@@ -1,33 +1,79 @@
 <template>
-    <div class="h-fit p-2 m-4 md:m-10 rounded-lg bg-gray-500 gap-4 grid grid-cols-1 lg:grid-cols-2">
-        <div>
-            <video class="rounded-lg w-full" controls="controls" :poster="testVideo.first_frame_url">
-                <source :src="testVideo.video_url">
-            </video>
-        </div>
-        <div>
-            <div class="flex justify-between">
-                <h1 class="text-lg font-bold">{{ testVideo.title }} {{ testVideo.id }}</h1>
-                <p>Two days ago</p>
-            </div>
-            <p>{{ testVideo.description }}</p>
-        </div>
+    <div class="p-2 m-4 md:m-10">
+        <VideoOnPage :video="videoData" v-if="videoDataLoaded" />
+        <custom-spinner v-else />
+
+        <CommentsOnVideoPage v-if="commentsDataLoaded" :comments="commentsData" @loadMoreComments="loadMoreComments"/>
+        <custom-spinner v-else />
     </div>
 </template>
 
 <script>
+    import VideoOnPage from '@/components/VideoOnPage.vue'
+    import CommentsOnVideoPage from '@/components/CommentsOnVideoPage.vue'
+    import axios from 'axios'
+    import { useToast } from "vue-toastification"
+
     export default {
+        components:{
+            VideoOnPage,
+            CommentsOnVideoPage
+        },
         data(){
             return{
-                testVideo: {
+                videoData: {
                     id: this.$route.params.id,
-                    title: "Test video title",
-                    description: "Vestibulum ut venenatis massa, nec porta odio. Donec sit amet nisi quis nunc congue imperdiet et id risus. Donec cursus diam vel libero aliquet dignissim. Pellentesque efficitur gravida tincidunt. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse sollicitudin sagittis vulputate. Cras porttitor dui est, at vulputate ex dictum vel. Phasellus consequat est non augue blandit, nec suscipit ex iaculis.",
-                    first_frame_url: "https://www.learntotrade.com.ph/assets-lttph/uploads/2016/04/video-preview-pic.jpg",
-                    video_url: "https://joy1.videvo.net/videvo_files/video/free/2014-05/large_watermarked/Futuristic_3D_Numbers_Countdown_Seconds__Videvo_preview.mp4",
-                    video_length: 61
+                },
+                videoDataLoaded: false,
+                commentsData: [
+                    {
+                        text: "Test this comment width and flexibility. ".repeat(20),
+                        owner_id: "asdasd-ad-asd-a-das-d", 
+                        rating: 2,
+                        liked: true, 
+                        dislike: false
+                    }
+                ],
+                //commentsData: [],
+                commentsPage: 1,
+                commentsTotalPages: 1,
+                commentsDataLoaded: false,
+            }
+        },
+        methods:{
+            async loadVideoData(){
+                try{
+                    const response = await axios.get(`http://localhost:5100/api/v1/videos/${this.videoData.id}`)
+                    this.videoData = response.data
+                    this.videoDataLoaded = true
+                } catch(e){
+                    const toast = useToast()
+                    console.log(e)
+                    if(e.code === "ERR_NETWORK") toast.error("Server is unavailable")
+                }
+            },
+            async loadCommentsData(){
+                try{
+                    if(this.commentsPage <= this.commentsTotalPages){
+                        const response = await axios.get(`http://localhost:5100/api/v1/videos/${this.videoData.id}/comments?page=${this.commentsPage}`)
+                        console.log(response.data.items)
+                        this.commentsTotalPages = response.data.total_pages
+                        this.commentsPage++
+                        //this.commentsData = [...this.commentsData, ...response.data.items]
+                    }
+                    
+                } catch(e){
+                    const toast = useToast()
+                    console.log(e)
+                    if(e.code === "ERR_NETWORK") toast.error("Server is unavailable")
+                } finally {
+                    this.commentsDataLoaded = true
                 }
             }
         },
+        mounted(){
+            this.loadVideoData()
+            this.loadCommentsData()
+        }
     }
 </script>

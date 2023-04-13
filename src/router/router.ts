@@ -1,5 +1,6 @@
 import MainPage from '@/pages/MainPage.vue'
 import VideoPage from '@/pages/VideoPage.vue'
+import ProfilePage from '@/pages/ProfilePage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -11,6 +12,10 @@ const routes = [
     {
         path: '/video/:id',
         component: VideoPage
+    },
+    {
+        path: '/profile/:id',
+        component: ProfilePage
     },
 ]
 

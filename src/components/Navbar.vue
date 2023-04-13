@@ -1,4 +1,3 @@
-<!-- Change <a> links to vue router link -->
 <template>
     <custom-dialog v-model:isVisible="dialogVisible">
         <AuthForm @closeDialog="closeDialog" />
@@ -11,7 +10,7 @@
             </span>
             <div class="flex md:order-2">
                 <custom-button @click="showDialog" v-if="!isAuth"> Authorize &#8658; </custom-button>
-                <custom-button @click="() => isAuth=false" v-else> Log out &#8656; </custom-button>
+                <custom-button @click="logout" v-else> Log out &#8656; </custom-button>
                 <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg class="w-6 h-6" @click="changeVisibility" aria-hidden="false" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -30,8 +29,8 @@
                     <li>
                         <custom-link @click="$router.push(servicesUrl)" :isSelected="currentUrl === servicesUrl"> Services </custom-link>
                     </li>
-                    <li>
-                        <custom-link @click="$router.push(contactsUrl)" :isSelected="currentUrl === contactsUrl"> Contact </custom-link>
+                    <li v-if="isAuth">
+                        <custom-link @click="$router.push(channelUrl)" :isSelected="currentUrl === channelUrl"> Your channel </custom-link>
                     </li>
                 </ul>
             </div>
@@ -39,10 +38,10 @@
     </nav>
 </template>
 
-<script lang="ts">
+<script>
     import AuthForm from "./AuthForm.vue"
     import { defineComponent } from "vue"
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
 
     export default defineComponent({
         components: {
@@ -55,7 +54,7 @@
                 indexUrl: '/',
                 aboutUrl: '/about',
                 servicesUrl: '/services',
-                contactsUrl: '/contacts'
+                baseChannelUrl: '/profile/'
             }
         },
         methods: {
@@ -67,15 +66,22 @@
             },
             closeDialog(){
                 this.dialogVisible = false
-            }
+            },
+            ...mapActions({
+                logout: 'auth/logout'
+            }),
         },
         computed: {
             currentUrl(){
                 return this.$route.fullPath
             },
+            channelUrl(){
+                return this.baseChannelUrl + this.userId
+            },
             ...mapState({
-                isAuth: 'auth/isAuth'
+                isAuth: state => state.auth.isAuth,
+                userId: state => state.auth.userId
             })
-        }
+        },
     })
 </script>
