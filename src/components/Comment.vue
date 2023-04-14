@@ -49,7 +49,6 @@
                         this.comment.disliked = false
                     }
                 } catch(e){
-                    console.log(e)
                     toast.error(e.response.data.detail)
                 }
             },
@@ -63,7 +62,6 @@
                         this.comment.liked = false
                     }
                 } catch(e){
-                    console.log(e)
                     toast.error(e.response.data.detail)
                 }
             },
@@ -79,7 +77,6 @@
                         this.comment.rating += 1
                     }
                 } catch(e){
-                    console.log(e)
                     toast.error(e.response.data.detail)
                 }
             }
