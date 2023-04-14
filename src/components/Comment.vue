@@ -1,4 +1,7 @@
 <template>
+    <custom-dialog  v-model:isVisible="dialogVisible">
+        <CommentUpdateForm @closeDialog="closeDialog" @updateComment="updateComment" :commentId="comment.id" :commentText="comment.text" />
+    </custom-dialog>
     <div class="flex flex-col md:flex-row gap-2 p-4 rounded-lg bg-gray-200 shadow-lg my-2 items-center">
         <div class="w-12 flex justify-center items-center flex-row md:flex-col gap-2">
             <span class="cursor-pointer">
@@ -11,22 +14,37 @@
                 <v-icon name="md-thumbdownalt-outlined" @click="dislike" fill="red" v-else title="Dislike" />
             </span>
         </div>
-        <div>
-            <p @click="$router.push(`/profile/${comment.owner_id}`)" class="text-blue-500 hover:underline cursor-pointer">
-                Author
-            </p>
-            {{ comment.text }}
+        <div class="w-full">
+            <div v-if="isCommentOwner" class="w-full flex flex-row-reverse gap-4">
+                <span @click="deleteComment" class="decoration-dashed cursor-pointer">Delete</span>
+                <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
+            </div>
+            <div>
+                <p @click="$router.push(`/profile/${comment.owner_id}`)" class="text-blue-500 hover:underline cursor-pointer">
+                    Author
+                </p>
+                {{ comment.text }}
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import CommentUpdateForm from '@/components/CommentUpdateForm.vue'
     import videosAxios from '@/axios/videosAxios'
     import { useToast } from "vue-toastification"
     import { mapState } from 'vuex'
 
     const toast = useToast()
     export default {
+        components:{
+            CommentUpdateForm
+        },
+        data(){
+            return{
+                dialogVisible: false
+            }
+        },
         props:{
             comment:{
                 type: Object,
@@ -34,11 +52,32 @@
             }
         },
         computed: {
-            ...mapState({
+            isCommentOwner(){
+                return this.comment.owner_id === this.userId
+            },
+            ...mapState({   
+                userId: state => state.auth.userId,
                 accessToken: state => state.auth.accessToken
             })
         },
         methods:{
+            showDialog(){
+                this.dialogVisible = true
+            },
+            closeDialog(){
+                this.dialogVisible = false
+            },
+            updateComment(comment){
+                this.$emit('updateComment', comment)
+            },
+            async deleteComment(){
+                try{
+                    await videosAxios.delete(`comments/${this.comment.id}`)
+                    this.$emit('deleteComment', this.comment.id)
+                } catch(e) {
+                    toast.error(e.response.data.detail)
+                }
+            },
             async like(){
                 try{
                     const response = await videosAxios.post(`comments/${this.comment.id}/like/`)
