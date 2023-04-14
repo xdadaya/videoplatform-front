@@ -32,7 +32,7 @@
             },
             videoDescription(){
                 return (this.video.description.length > 160) ? this.video.description.slice(0, 160) + "..." : this.video.description
-            }
-        }
+            },
+        },
     }
 </script>
