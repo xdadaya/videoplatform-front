@@ -1,5 +1,5 @@
-import axios from "axios"
-import { Commit, Dispatch} from "vuex"
+import usersAxios from '@/axios/usersAxios'
+import { Commit, Dispatch } from "vuex"
 import { useToast } from 'vue-toastification'
 
 export interface AuthState {
@@ -47,7 +47,7 @@ export const authModule = {
         },
         async login({state, commit, dispatch}: AuthStoreInterface, userData: object) {
             try{
-                const response = await axios.post(`http://localhost:5000/api/v1/users/login`, userData)
+                const response = await usersAxios.post(`users/login`, userData)
                 commit('setIsAuth', true)
                 commit('setRefreshToken', response.data.refresh_token)
                 commit('setAccessToken', response.data.access_token)
@@ -60,7 +60,7 @@ export const authModule = {
         },
         async register({state, commit, dispatch}: AuthStoreInterface, userData: object) {
             try{
-                const response = await axios.post(`http://localhost:5000/api/v1/users/register`, userData)
+                const response = await usersAxios.post(`users/register`, userData)
                 commit('setIsAuth', true)
                 commit('setRefreshToken', response.data.refresh_token)
                 commit('setAccessToken', response.data.access_token)

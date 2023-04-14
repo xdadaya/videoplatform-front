@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import statsAxios from '@/axios/statsAxios'
     import { useToast } from 'vue-toastification'
     export default {
         data(){
@@ -29,7 +29,7 @@
         methods:{
             async fetchUserData(){
                 try{
-                    const response = await axios.get(`http://localhost:5200/stats/${this.userData.userId}`)
+                    const response = await statsAxios.get(`stats/${this.userData.userId}`)
                     this.avgCommentsPerVideo = response.data.avg_comments_per_video
                     this.avgRating = response.data.avg_rating
                     this.avgTextLength = response.data.avg_text_length
