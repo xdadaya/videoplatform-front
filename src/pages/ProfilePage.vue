@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+    import axios from 'axios'
+    import { useToast } from 'vue-toastification'
     export default {
         data(){
             return{
@@ -35,7 +36,8 @@ import axios from 'axios'
                     this.commentsAmount = response.data.comments_amount
                     this.isLoaded = true
                 } catch(e){
-                    console.log(e)
+                    const toast = useToast()
+                    toast.error("Error loading user data")
                 }
             }
         },

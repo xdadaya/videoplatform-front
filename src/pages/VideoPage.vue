@@ -48,15 +48,13 @@
                     this.videoDataLoaded = true
                 } catch(e){
                     const toast = useToast()
-                    console.log(e)
-                    if(e.code === "ERR_NETWORK") toast.error("Server is unavailable")
+                    toast.error("Error loading video data")
                 }
             },
             async loadCommentsData(){
                 try{
                     if(this.commentsPage <= this.commentsTotalPages){
                         const response = await axios.get(`http://localhost:5100/api/v1/videos/${this.videoData.id}/comments?page=${this.commentsPage}`)
-                        console.log(response.data.items)
                         this.commentsTotalPages = response.data.total_pages
                         this.commentsPage++
                         //this.commentsData = [...this.commentsData, ...response.data.items]
@@ -64,8 +62,7 @@
                     
                 } catch(e){
                     const toast = useToast()
-                    console.log(e)
-                    if(e.code === "ERR_NETWORK") toast.error("Server is unavailable")
+                    toast.error("Error loading comments data")
                 } finally {
                     this.commentsDataLoaded = true
                 }

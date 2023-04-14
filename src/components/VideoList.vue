@@ -34,7 +34,6 @@
                         this.totalPages = response.data.total_pages
                         this.pageNumber++
                     } catch(e){
-                        console.log(e)
                         const toast = useToast()
                         toast.error("Error loading videos")
                     } finally {

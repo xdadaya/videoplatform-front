@@ -54,8 +54,7 @@ export const authModule = {
                 commit('setUserId', JSON.parse(atob(state.accessToken.split('.')[1])).id)
                 return true
             } catch(e) {
-                console.log(e)
-                toast.error("Error")
+                toast.error("Error login")
                 return false
             }
         },
@@ -68,8 +67,7 @@ export const authModule = {
                 commit('setUserId', JSON.parse(atob(state.accessToken.split('.')[1])).id)
                 return true
             } catch(e) {
-                console.log(e)
-                toast.error("Error")
+                toast.error("Error registration")
                 return false
             }
         }
