@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from '@/store/index'
-const url = "http://localhost:5000/api/v1/"
+
+const url = process.env.usersService
 
 
 const instance = axios.create({
