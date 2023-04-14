@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import videosAxios from '@/axios/videosAxios'
     import { useToast } from 'vue-toastification'
     import VideoInList from './VideoInList.vue'
     export default {
@@ -29,7 +29,7 @@
             async loadMoreVideos(){
                 if(this.pageNumber <= this.totalPages){
                     try{
-                        const response = await axios.get(`http://localhost:5100/api/v1/videos?page=${this.pageNumber}`)
+                        const response = await videosAxios.get(`videos?page=${this.pageNumber}`)
                         this.videos = [...this.videos, ...response.data.items]
                         this.totalPages = response.data.total_pages
                         this.pageNumber++
