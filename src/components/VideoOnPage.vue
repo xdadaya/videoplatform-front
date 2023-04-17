@@ -6,9 +6,12 @@
             </video>
         </div>
         <div>
-            <h1 class="text-lg font-bold">{{ video.title }}</h1>
-            <p @click="$router.push(`/profile/${video.owner_id}`)" class="text-blue-600 hover:underline cursor-pointer">
-                Author's page
+            <div class="flex justify-between">
+                <h1 class="text-xl font-bold">{{ video.title }}</h1>
+                <h1>{{ video.created_at }}</h1>
+            </div>
+            <p @click="$router.push(`/profile/${video.owner.id}`)" class="text-blue-600 hover:underline cursor-pointer font-bold text-xl">
+                {{ video.owner.username }}
             </p>
             <p>{{ video.description }}</p>
         </div>

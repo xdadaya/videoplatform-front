@@ -15,6 +15,7 @@
                 required: true
             }
         },
+        emits:["commentIntersection", "deleteComment", "updateComment"],
         methods:{
             loadMoreComments(){
                 this.$emit('commentIntersection')

@@ -20,8 +20,8 @@
                 <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
             </div>
             <div>
-                <p @click="$router.push(`/profile/${comment.owner_id}`)" class="text-blue-500 hover:underline cursor-pointer">
-                    Author
+                <p @click="$router.push(`/profile/${comment.owner.id}`)" class="text-blue-500 hover:underline cursor-pointer">
+                    {{ comment.owner.username }}
                 </p>
                 {{ comment.text }}
             </div>
@@ -51,9 +51,10 @@
                 required: true
             }
         },
+        emits:["deleteComment", "updateComment"],
         computed: {
             isCommentOwner(){
-                return this.comment.owner_id === this.userId
+                return this.comment.owner.id === this.userId
             },
             ...mapState({   
                 userId: state => state.auth.userId,
