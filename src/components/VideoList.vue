@@ -2,7 +2,9 @@
     <div v-if="videosLoaded">
         <div v-if="!videosExists" class="text-2xl font-bold mx-auto w-fit">No videos</div>
         <div v-else class="grid grid-cols-1 gap-4 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <VideoInList v-for="video in videos" :key="video.id" :video="video" />
+            <transition-group name="video-list">
+                <VideoInList v-for="video in videos" :key="video.id" :video="video" />
+            </transition-group>
             <div v-intersection="loadMoreVideos" class="h-4 bg-red-500" />
         </div>
     </div>
@@ -52,3 +54,28 @@
         }
     }
 </script>
+
+<style scoped>
+.video-list-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.video-list-enter-active, .video-list-leave-active {
+    transition: all 0.5s ease
+}
+
+.video-list-enter-from {
+    opacity: 0;
+    transform: translateY(-130px);
+}
+
+.video-list-leave-to {
+    opacity: 0;
+    transform: translateY(130px);
+}
+
+.video-list-move {
+    transition: transform 0.8s ease;
+}
+</style>

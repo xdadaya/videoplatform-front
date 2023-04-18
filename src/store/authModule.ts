@@ -1,6 +1,7 @@
 import usersAxios from '@/axios/usersAxios'
 import { Commit, Dispatch } from "vuex"
 import { useToast } from 'vue-toastification'
+import router from '@/router/router'
 
 export interface AuthState {
     isAuth: boolean,
@@ -44,6 +45,7 @@ export const authModule = {
             commit('setRefreshToken', '')
             commit('setAccessToken', '')
             commit('setUserId', '')
+            router.push('/')
         },
         async login({state, commit, dispatch}: AuthStoreInterface, userData: object) {
             try{
@@ -52,6 +54,7 @@ export const authModule = {
                 commit('setRefreshToken', response.data.refresh_token)
                 commit('setAccessToken', response.data.access_token)
                 commit('setUserId', JSON.parse(atob(state.accessToken.split('.')[1])).id)
+                router.push('/')
                 return true
             } catch(e) {
                 toast.error("Error login")
@@ -65,6 +68,7 @@ export const authModule = {
                 commit('setRefreshToken', response.data.refresh_token)
                 commit('setAccessToken', response.data.access_token)
                 commit('setUserId', JSON.parse(atob(state.accessToken.split('.')[1])).id)
+                router.push('/')
                 return true
             } catch(e) {
                 toast.error("Error registration")

@@ -1,6 +1,7 @@
 import MainPage from '@/pages/MainPage.vue'
 import VideoPage from '@/pages/VideoPage.vue'
 import ProfilePage from '@/pages/ProfilePage.vue'
+import NotFoundPage from '@/pages/NotFoundPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -16,6 +17,10 @@ const routes = [
     {
         path: '/profile/:id',
         component: ProfilePage
+    },
+    {
+        path: '/404',
+        component: NotFoundPage
     },
 ]
 
