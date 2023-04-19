@@ -1,6 +1,13 @@
 <template>
+    <custom-dialog v-model:isVisible="dialogVisible">
+        <UserUpdateForm @closeDialog="closeDialog" :username="username" @updateUsername="updateUsername"/>
+    </custom-dialog>
     <div class="mx-auto justify-center items-center w-fit my-10">
         <div class="p-5" v-if="statsLoaded && userLoaded" >
+            <div v-if="userData.userId === $store.state.auth.userId" class="w-full flex flex-row-reverse gap-4">
+                <span @click="deleteUser" class="decoration-dashed cursor-pointer">Delete</span>
+                <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
+            </div>
             <h1 class="text-3xl mx-auto w-fit font-bold">{{ this.username }}</h1>
             <div class="my-5">
                 <p> Total comments: {{ this.commentsAmount }} </p>
@@ -19,7 +26,8 @@
     import usersAxios from '@/axios/usersAxios'
     import { errorHandler } from '@/axios/toastHandler.ts'
     import UserSkeleton from '@/components/Skeletons/UserSkeleton.vue'
-
+    import { mapActions } from 'vuex'
+    import UserUpdateForm from '@/components/UserUpdateForm.vue'
     export default {
         data(){
             return{
@@ -28,12 +36,26 @@
                 },
                 statsLoaded: false,
                 userLoaded: false,
+                dialogVisible: false
             }
         },
         components:{
-            UserSkeleton
+            UserSkeleton,
+            UserUpdateForm
         },
         methods:{
+            showDialog(){
+                this.dialogVisible = true
+            },
+            closeDialog(){
+                this.dialogVisible = false
+            },
+            updateUsername(user){
+                this.username = user.username
+            },
+            ...mapActions({
+                logout: 'auth/logout'
+            }),
             async fetchUserData(){
                 try{
                     const response = await usersAxios.get(`users/user/${this.userData.userId}`)
@@ -54,11 +76,22 @@
                 } catch(e){
                     errorHandler(e)
                 }
+            },
+            async deleteUser(){
+                try{
+                    const response = await usersAxios.delete(`users/me`)
+                    this.logout()
+                } catch(e){
+                    errorHandler(e)
+                }
             }
         },
         mounted(){
-            this.fetchUserStatistics()
-            this.fetchUserData()
+            if(this.userData.userId==="null") this.$router.push('/404')
+            else{
+                this.fetchUserStatistics()
+                this.fetchUserData()
+            }
         }
     }
 </script>
