@@ -30,9 +30,8 @@
 
 <script>
     import videosAxios from '@/axios/videosAxios'
-    import { useToast } from "vue-toastification"
     import VideoUpdateForm from '@/components/VideoUpdateForm.vue'
-    const toast = useToast()
+    import { errorHandler } from '@/axios/toastHandler.ts'
 
     export default {
         components:{
@@ -65,11 +64,10 @@
                     this.spinnerVisible = true
                     await videosAxios.delete(`videos/${this.video.id}/`)
                     this.spinnerVisible = false
-                    toast.success("Video was successfully deleted")
                     this.$router.push("/")
                 } catch(e) {
                     this.spinnerVisible = false
-                    console.log(e)
+                    errorHandler(e)
                 }
             }
         }

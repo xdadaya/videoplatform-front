@@ -31,6 +31,7 @@
 <script>
     import { useToast } from 'vue-toastification';
     import videosAxios from '@/axios/videosAxios'
+    import { errorHandler } from '@/axios/toastHandler.ts'
 
     const toast = useToast()
     
@@ -49,6 +50,9 @@
                 this.video = event.target.files[0];
             },
             verifyVideo(){
+                if(!this.video){
+                    toast.error("You didn't choose a video")
+                }
                 if(this.video.type !== 'video/mp4') {
                     toast.error("Video type is not mp4. Only mp4 is supported")
                     return false
@@ -72,7 +76,7 @@
                     this.$emit('closeDialog')
                     this.$router.push(`/video/${response.data.id}`)
                 } catch(e){
-                    console.log(e)
+                    errorHandler(e)
                 } finally {
                     this.processingRequest = false
                 }

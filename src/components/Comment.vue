@@ -32,10 +32,9 @@
 <script>
     import CommentUpdateForm from '@/components/CommentUpdateForm.vue'
     import videosAxios from '@/axios/videosAxios'
-    import { useToast } from "vue-toastification"
+    import { errorHandler } from '@/axios/toastHandler.ts'
     import { mapState } from 'vuex'
 
-    const toast = useToast()
     export default {
         components:{
             CommentUpdateForm
@@ -76,7 +75,7 @@
                     await videosAxios.delete(`comments/${this.comment.id}`)
                     this.$emit('deleteComment', this.comment.id)
                 } catch(e) {
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async like(){
@@ -89,7 +88,7 @@
                         this.comment.disliked = false
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async dislike(){
@@ -102,7 +101,7 @@
                         this.comment.liked = false
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async unlike(){
@@ -117,7 +116,7 @@
                         this.comment.rating += 1
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             }
         }

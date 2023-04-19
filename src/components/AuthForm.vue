@@ -30,10 +30,10 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useToast } from 'vue-toastification'
 import { mapActions } from 'vuex'
 import CustomButton from './UI/CustomButton.vue'
 
+import { useToast } from 'vue-toastification'
 const toast = useToast()
 
 export default defineComponent({

@@ -24,9 +24,7 @@
     import CommentsOnVideoPage from '@/components/CommentsOnVideoPage.vue'
     import CommentForm from '@/components/CommentForm.vue'
     import videosAxios from '@/axios/videosAxios'
-    import { useToast } from "vue-toastification"
-
-    const toast = useToast()
+    import { errorHandler } from '@/axios/toastHandler.ts'
     
     export default {
         components:{
@@ -80,8 +78,7 @@
                     this.videoData = response.data
                     this.videoDataExists = true
                 } catch(e){
-                    if(e.response.status == 404) this.$router.push('/404')
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async loadCommentsData(){
@@ -94,8 +91,7 @@
                         this.commentsDataExists = true
                     }
                 } catch(e){
-                    console.log(e)
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             }
         },
