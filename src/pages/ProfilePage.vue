@@ -5,8 +5,8 @@
     <div class="mx-auto justify-center items-center w-fit my-10">
         <div class="p-5" v-if="statsLoaded && userLoaded" >
             <div v-if="userData.userId === $store.state.auth.userId" class="w-full flex flex-row-reverse gap-4">
-                <span @click="deleteUser" class="decoration-dashed cursor-pointer">Delete</span>
-                <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
+                <span @click="deleteUser" class="decoration-dashed cursor-pointer" title="Delete profile"> <v-icon name="fa-trash-alt" /> </span>
+                <span @click="showDialog" class="decoration-dashed cursor-pointer" title="Change username"> <v-icon name="bi-pencil-square" /> </span>
             </div>
             <h1 class="text-3xl mx-auto w-fit font-bold">{{ this.username }}</h1>
             <div class="my-5">
