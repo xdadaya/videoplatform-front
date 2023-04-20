@@ -23,12 +23,6 @@
                     <li>
                         <custom-link @click="$router.push(indexUrl)" :isSelected="currentUrl === indexUrl"> Home </custom-link>
                     </li>
-                    <li>
-                        <custom-link @click="$router.push(aboutUrl)" :isSelected="currentUrl === aboutUrl"> About </custom-link>
-                    </li>
-                    <li>
-                        <custom-link @click="$router.push(servicesUrl)" :isSelected="currentUrl === servicesUrl"> Services </custom-link>
-                    </li>
                     <li v-if="isAuth">
                         <custom-link @click="$router.push(channelUrl)" :isSelected="currentUrl === channelUrl"> Your channel </custom-link>
                     </li>

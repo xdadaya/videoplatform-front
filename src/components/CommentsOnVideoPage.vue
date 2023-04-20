@@ -1,6 +1,6 @@
 <template>
     <Comment v-for="comment in comments" :key="comment.id" :comment="comment" @deleteComment="deleteComment" @updateComment="updateComment" />
-    <div v-intersection="loadMoreComments" class="h-10 bg-red-500" />
+    <div v-intersection="loadMoreComments" class="h-10" />
 </template>
 
 <script>

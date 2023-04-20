@@ -5,7 +5,7 @@
             <transition-group name="video-list">
                 <VideoInList v-for="video in videos" :key="video.id" :video="video" />
             </transition-group>
-            <div v-intersection="loadMoreVideos" class="h-4 bg-red-500" />
+            <div v-intersection="loadMoreVideos" class="h-4" />
         </div>
     </div>
     <custom-spinner v-else />

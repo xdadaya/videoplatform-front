@@ -5,24 +5,22 @@
     <custom-dialog v-model:isVisible="dialogVisible">
         <VideoUpdateForm @closeDialog="closeDialog" @updateVideo="updateVideo" :videoId="video.id" :title="video.title" :description="video.description"  :category="video.category" />
     </custom-dialog>
-    <div class="h-fit rounded-lg bg-gray-500 gap-4 grid grid-cols-1 lg:grid-cols-2">
-        <div>
-            <video class="rounded-l-lg w-full focus:outline-none" controls="controls" :poster="video.first_frame_url">
+    <div class="h-fit rounded-lg gap-4 flex flex-col xl:flex-row">
+        <div class="w-full xl:w-4/5">
+            <video class="rounded-lg w-full focus:outline-none" controls="controls" :poster="video.first_frame_url">
                 <source :src="video.video_url">
             </video>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full xl:w-1/5">
             <div class="flex flex-row-reverse gap-5" v-if="this.$store.state.auth.userId === video.owner.id">
-                <span @click="deleteVideo" class="decoration-dashed cursor-pointer">Delete</span>
-                <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
+                <span @click="deleteVideo" class="decoration-dashed cursor-pointer" title="Delete video"> <v-icon name="fa-trash-alt" /> </span>
+                <span @click="showDialog" class="decoration-dashed cursor-pointer" title="Update video data"> <v-icon name="bi-pencil-square" /> </span>
             </div>
             <div class="flex justify-between">
-                <h1 class="text-xl font-bold">{{ video.title }}</h1>
-                <h1>{{ video.created_at }}</h1>
+                <h1 class="text-2xl font-bold">{{ video.title }}</h1>
+                <h1>{{ prettyDate(video.created_at) }}</h1>
             </div>
-            <p @click="$router.push(`/profile/${video.owner.id}`)" class="text-blue-600 hover:underline cursor-pointer font-bold text-xl">
-                {{ video.owner.username }}
-            </p>
+            <div>Author's page: <span @click="$router.push(`/profile/${video.owner.id}`)" class="text-blue-600 hover:underline cursor-pointer font-bold text-xl">{{ video.owner.username }}</span></div>
             <p>{{ video.description }}</p>
         </div>
     </div>
@@ -58,6 +56,25 @@
             },
             updateVideo(newVideo){
                 this.$emit('updateVideo', newVideo)
+            },
+            prettyDate(dateString){
+                console.log(dateString)
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+
+                if (diffInSeconds < 60) {
+                    return diffInSeconds + ' seconds ago';
+                } else if (diffInSeconds < 3600) {
+                    const diffInMinutes = Math.floor(diffInSeconds / 60);
+                    return diffInMinutes + ' minutes ago';
+                } else if (diffInSeconds < 86400) {
+                    const diffInHours = Math.floor(diffInSeconds / 3600);
+                    return diffInHours + ' hours ago';
+                } else {
+                    const diffInDays = Math.floor(diffInSeconds / 86400);
+                    return diffInDays + ' days ago';
+                }
             },
             async deleteVideo(){
                 try{
