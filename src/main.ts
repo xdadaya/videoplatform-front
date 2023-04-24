@@ -7,11 +7,11 @@ import directives from '@/directives'
 import router from '@/router/router'
 import store from '@/store'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
-import { MdThumbupaltOutlined, MdThumbupaltRound, MdThumbdownaltOutlined, MdThumbdownaltRound } from "oh-vue-icons/icons"
+import { MdThumbupaltOutlined, MdThumbupaltRound, MdThumbdownaltOutlined, MdThumbdownaltRound, FaTrashAlt, BiPencilSquare } from "oh-vue-icons/icons"
 
 const app = createApp(App)
 
-addIcons(MdThumbupaltOutlined, MdThumbupaltRound, MdThumbdownaltOutlined, MdThumbdownaltRound)
+addIcons(MdThumbupaltOutlined, MdThumbupaltRound, MdThumbdownaltOutlined, MdThumbdownaltRound, FaTrashAlt, BiPencilSquare)
 
 
 components.forEach(component => app.component(component.name, component))

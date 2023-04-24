@@ -5,7 +5,7 @@
             <transition-group name="video-list">
                 <VideoInList v-for="video in videos" :key="video.id" :video="video" />
             </transition-group>
-            <div v-intersection="loadMoreVideos" class="h-4 bg-red-500" />
+            <div v-intersection="loadMoreVideos" class="h-4" />
         </div>
     </div>
     <custom-spinner v-else />
@@ -13,7 +13,8 @@
 
 <script>
     import videosAxios from '@/axios/videosAxios'
-    import { useToast } from 'vue-toastification'
+    import { errorHandler } from '@/axios/toastHandler.ts'
+
     import VideoInList from './VideoInList.vue'
     export default {
         components: {
@@ -36,8 +37,7 @@
                         this.totalPages = response.data.total_pages
                         this.pageNumber++
                     } catch(e){
-                        const toast = useToast()
-                        toast.error("Error loading videos")
+                        errorHandler(e)
                     } finally {
                         this.videosLoaded = true
                     }

@@ -16,13 +16,14 @@
         </div>
         <div class="w-full">
             <div v-if="isCommentOwner" class="w-full flex flex-row-reverse gap-4">
-                <span @click="deleteComment" class="decoration-dashed cursor-pointer">Delete</span>
-                <span @click="showDialog" class="decoration-dashed cursor-pointer">Update</span>
+                <span @click="deleteComment" class="decoration-dashed cursor-pointer" title="Delete comment"> <v-icon name="fa-trash-alt" /> </span>
+                <span @click="showDialog" class="decoration-dashed cursor-pointer" title="Update comment text"> <v-icon name="bi-pencil-square" /> </span>
             </div>
             <div>
-                <p @click="$router.push(`/profile/${comment.owner.id}`)" class="text-blue-500 hover:underline cursor-pointer">
-                    {{ comment.owner.username }}
-                </p>
+                <div class="flex justify-between items-center">
+                    <span @click="$router.push(`/profile/${comment.owner.id}`)" class="text-blue-500 hover:underline cursor-pointer">{{ comment.owner.username }}</span>
+                    <span> {{ prettyDate(comment.created_at) }}</span>
+                </div>
                 {{ comment.text }}
             </div>
         </div>
@@ -32,10 +33,9 @@
 <script>
     import CommentUpdateForm from '@/components/CommentUpdateForm.vue'
     import videosAxios from '@/axios/videosAxios'
-    import { useToast } from "vue-toastification"
+    import { errorHandler } from '@/axios/toastHandler.ts'
     import { mapState } from 'vuex'
 
-    const toast = useToast()
     export default {
         components:{
             CommentUpdateForm
@@ -71,12 +71,31 @@
             updateComment(comment){
                 this.$emit('updateComment', comment)
             },
+            prettyDate(dateString){
+                console.log(dateString)
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+
+                if (diffInSeconds < 60) {
+                    return diffInSeconds + ' seconds ago';
+                } else if (diffInSeconds < 3600) {
+                    const diffInMinutes = Math.floor(diffInSeconds / 60);
+                    return diffInMinutes + ' minutes ago';
+                } else if (diffInSeconds < 86400) {
+                    const diffInHours = Math.floor(diffInSeconds / 3600);
+                    return diffInHours + ' hours ago';
+                } else {
+                    const diffInDays = Math.floor(diffInSeconds / 86400);
+                    return diffInDays + ' days ago';
+                }
+            },
             async deleteComment(){
                 try{
                     await videosAxios.delete(`comments/${this.comment.id}`)
                     this.$emit('deleteComment', this.comment.id)
                 } catch(e) {
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async like(){
@@ -89,7 +108,7 @@
                         this.comment.disliked = false
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async dislike(){
@@ -102,7 +121,7 @@
                         this.comment.liked = false
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             },
             async unlike(){
@@ -117,7 +136,7 @@
                         this.comment.rating += 1
                     }
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 }
             }
         }

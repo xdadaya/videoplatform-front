@@ -12,10 +12,8 @@
 </template>
 
 <script>
-    import { useToast } from 'vue-toastification'
     import videosAxios from '@/axios/videosAxios'
-    
-    const toast = useToast()
+    import { errorHandler } from '@/axios/toastHandler.ts'
 
     export default {
         data(){
@@ -50,11 +48,10 @@
                     this.processingRequest = true
                     const data =  {title: this.newTitle, description: this.newDescription, category: this.newCategory}
                     const response = await videosAxios.put(`videos/${this.videoId}/`, data)
-                    console.log(response.data)
                     this.$emit('updateVideo', response.data)
                     this.$emit('closeDialog')
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 } finally{
                     this.processingRequest = false
                 }

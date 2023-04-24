@@ -10,10 +10,8 @@
 </template>
 
 <script>
-    import { useToast } from 'vue-toastification'
     import videosAxios from '@/axios/videosAxios'
-
-    const toast = useToast()
+    import { errorHandler } from '@/axios/toastHandler.ts'
 
     export default {
         data(){
@@ -39,7 +37,7 @@
                     this.$emit('updateComment', response.data)
                     this.$emit('closeDialog')
                 } catch(e){
-                    toast.error(e.response.data.detail)
+                    errorHandler(e)
                 } finally{
                     this.processingRequest = false
                 }
