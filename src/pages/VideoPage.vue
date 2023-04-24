@@ -1,10 +1,10 @@
 <template>
     <div class="p-2 m-4 md:m-10">
-        <custom-dialog  v-model:isVisible="dialogVisible">
+        <custom-dialog v-model:isVisible="dialogVisible">
             <CommentForm @closeDialog="closeDialog" @addComment="insertComment" :videoId="videoData.id" />
         </custom-dialog>
 
-        <VideoOnPage :video="videoData" v-if="videoDataExists" />
+        <VideoOnPage :video="videoData" v-if="videoDataExists" @updateVideo="updateVideo" />
         <VideoSkeleton v-else />
 
         <div class="flex justify-center items-center my-6 gap-40">
@@ -70,6 +70,9 @@
             updateComment(comment){
                 const temp = [...this.commentsData]
                 this.commentsData = [...temp.map(elem => (elem.id===comment.id) ? comment : elem)]
+            },
+            updateVideo(newVideo){
+                this.videoData = newVideo
             },
             async loadVideoData(){
                 try{
