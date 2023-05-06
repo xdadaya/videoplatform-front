@@ -1,5 +1,8 @@
 # front-videos
 
+Frontend framework - Vue.js\
+[API](https://github.com/xdadaya/fastapi-videoplatform)
+
 ## Project setup
 ```
 npm install
